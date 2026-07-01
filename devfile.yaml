@@ -9,7 +9,7 @@ projects:
 components:
   - name: dev-runtime
     container:
-      image: quay.io/devfile/nodejs-developer-info:latest
+      image: registry.redhat.io/devspaces/udi-rhel9:latest
       memoryLimit: 2Gi
       env:
         - name: VSCODE_DEFAULT_WORKSPACE
