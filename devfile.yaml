@@ -1,0 +1,22 @@
+schemaVersion: 2.2.0
+metadata:
+  name: my-custom-workspace
+projects:
+  - name: project-name
+    git:
+      remotes:
+        origin: "https://github.com/aradhanay621/ingress-gitops.git"
+components:
+  - name: dev-runtime
+    container:
+      image: quay.io/devfile/nodejs-developer-info:latest
+      memoryLimit: 2Gi
+      env:
+        - name: VSCODE_DEFAULT_WORKSPACE
+          value: "/projects/project-name/workspace-file"
+commands:
+  - id: install
+    exec:
+      component: dev-runtime
+      commandLine: "npm install"
+      workingDir: /projects/project-name
