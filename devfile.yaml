@@ -5,15 +5,19 @@ projects:
   - name: project-name
     git:
       remotes:
-        origin: "https://github.com/aradhanay621/ingress-gitops.git"
+        origin: "https://github.com/your-organization/your-repo.git"
 components:
   - name: dev-runtime
     container:
       image: quay.io/devfile/universal-developer-image:ubi9-latest
-      memoryLimit: 2Gi
+      memoryLimit: 3Gi
+      # --- THE FIX ---
+      overrideCommand: true
+      command: ['tail', '-f', '/dev/null']
+      # ---------------
       env:
         - name: VSCODE_DEFAULT_WORKSPACE
-          value: "/projects/project-name/workspace-file"
+          value: "/projects/project-name/my-project.code-workspace"
 commands:
   - id: install
     exec:
