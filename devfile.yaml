@@ -1,13 +1,12 @@
 schemaVersion: 2.2.2
 metadata:
-  name: customer-repro-no-projects
+  name: customer-repro-subfolder
 components:
   - name: tooling
     container:
-      # Using a minimal UBI image ensures the platform can boot (unlike Alpine)
       image: registry.access.redhat.com/ubi8/ubi-minimal:latest
       memoryLimit: 1.5Gi
       command: ['tail', '-f', '/dev/null']
       env:
         - name: VSCODE_DEFAULT_WORKSPACE
-          value: "/projects/.code-workspace"
+          value: "/projects/my-custom-folder/.code-workspace"
