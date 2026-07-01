@@ -1,107 +1,12 @@
 schemaVersion: 2.2.2
 metadata:
-  name: python
+  name: dynamic-mutation-test
 components:
   - name: universal-developer-image
     container:
-      # Publicly pullable, standard devfile UDI image
       image: quay.io/devfile/universal-developer-image:ubi8-latest
-      volumeMounts:
-        - name: venv
-          path: /home/user/.venv
-      memoryLimit: 3Gi # Increased to comfortably handle heavy dependencies like numpy/pandas
+      memoryLimit: 3Gi
       mountSources: true
       env:
-        # Re-routed extension references to look inside the active project directory
-        - name: DEFAULT_EXTENSIONS
-          value: |
-            /projects/devfile-3p-python/plugins/ms-python.python.vsix;
-            /projects/devfile-3p-python/plugins/ms-python.vscode-pylance.vsix;
-            /projects/devfile-3p-python/plugins/ms-python.debugpy.vsix;
-            /projects/devfile-3p-python/plugins/ms-python.vscode-python-envs.vsix;
-            /projects/devfile-3p-python/plugins/ms-python.mypy-type-checker.vsix;
-            /projects/devfile-3p-python/plugins/charliermarsh.ruff.vsix;
-
-  - name: venv
-    volume:
-      size: 1G
-
-commands:
-  - id: configure-pip
-    exec:
-      label: "Configure pip"
-      component: universal-developer-image
-      workingDir: /projects/devfile-3p-python
-      # Reverted pip config to use standard, public internet defaults
-      commandLine: |
-        pip config unset --user global.cert || true && \
-        pip config unset --user global.index-url || true && \
-        pip config unset --user global.trusted-host || true
-      group:
-        kind: build
-        isDefault: true
-
-  - id: install-python-packages
-    exec:
-      component: universal-developer-image
-      commandLine: |
-        pip install --upgrade pip && \
-        pip install numpy pandas matplotlib scikit-learn pytest flake8
-      workingDir: /projects/devfile-3p-python
-      group:
-        kind: build
-        isDefault: true
-
-  - id: run-application
-    exec:
-      label: "Run application"
-      component: universal-developer-image
-      workingDir: /projects/devfile-3p-python
-      commandLine: "python3 hello-world.py"
-      group:
-        kind: run
-
-  - id: run-python
-    exec:
-      component: universal-developer-image # Corrected component pointer name mismatch
-      commandLine: python
-      workingDir: /projects/devfile-3p-python
-      group:
-        kind: run
-        isDefault: true
-
-  - id: run-pytest
-    exec:
-      component: universal-developer-image
-      commandLine: pytest
-      workingDir: /projects/devfile-3p-python
-      group:
-        kind: test
-
-  - id: run-flake8
-    exec:
-      component: universal-developer-image
-      commandLine: flake8 .
-      workingDir: /projects/devfile-3p-python
-      group:
-        kind: test
-
-  - id: add-default-extensions
-    exec:
-      component: universal-developer-image
-      workingDir: /projects/devfile-3p-python/plugins
-      # Removed private secrets handling. Downloads extensions cleanly via public Open VSX registry hooks.
-      commandLine: |
-        mkdir -p /projects/devfile-3p-python/plugins
-        curl -L -o "ms-python.python.vsix" "https://open-vsx.org/api/ms-python/python/latest/file"
-        curl -L -o "ms-python.vscode-pylance.vsix" "https://open-vsx.org/api/ms-python/vscode-pylance/latest/file"
-        curl -L -o "ms-python.debugpy.vsix" "https://open-vsx.org/api/ms-python/debugpy/linux-x64/latest/file"
-        curl -L -o "ms-python.vscode-python-envs.vsix" "https://open-vsx.org/api/ms-python/vscode-python-envs/latest/file"
-        curl -L -o "ms-python.mypy-type-checker.vsix" "https://open-vsx.org/api/ms-python/mypy-type-checker/latest/file"
-        curl -L -o "charliermarsh.ruff.vsix" "https://open-vsx.org/api/charliermarsh/ruff/linux-x64/latest/file"
-
-events:
-  postStart:
-    - configure-pip
-    - add-default-extensions
-    - install-python-packages
+        - name: VSCODE_DEFAULT_WORKSPACE
+          value: "/projects/.code-workspace" # <-- Changed path
