@@ -1,6 +1,9 @@
 schemaVersion: 2.2.0
 metadata:
   name: reproduce-workspace-issue
+attributes:
+  # This tells the platform not to create or initialize a persistent /home/user volume
+  persistUserHome: false 
 projects:
   - name: project-name
     git:
@@ -11,7 +14,6 @@ components:
     container:
       image: quay.io/devfile/universal-developer-image:ubi9-latest
       memoryLimit: 3Gi
-      # Cleaned up command/args to prevent Init Container crashes
       env:
         - name: VSCODE_DEFAULT_WORKSPACE
           value: "/projects/project-name/.code-workspace"
