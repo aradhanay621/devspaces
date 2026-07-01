@@ -1,8 +1,11 @@
 {
-  "folders": [
-    {
-      "name": "tmp-folder",
-      "path": "/tmp"
-    }
-  ]
+	"folders": [
+		{
+			"path": "hello-world"
+		},
+        {
+            "name": "home",
+            "path": "/home/user"
+        }
+	]
 }
