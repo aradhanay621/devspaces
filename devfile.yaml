@@ -1,8 +1,8 @@
 schemaVersion: 2.2.0
 metadata:
-  name: my-custom-workspace
+  name: reproduce-workspace-issue
 projects:
-  - name: project-name
+  - name: devfile-3p-python # <--- Must match this folder name
     git:
       remotes:
         origin: "https://github.com/your-organization/your-repo.git"
@@ -11,16 +11,14 @@ components:
     container:
       image: quay.io/devfile/universal-developer-image:ubi9-latest
       memoryLimit: 3Gi
-      # --- THE FIX ---
       overrideCommand: true
       command: ['tail', '-f', '/dev/null']
-      # ---------------
       env:
         - name: VSCODE_DEFAULT_WORKSPACE
-          value: "/projects/project-name/my-project.code-workspace"
+          value: "/projects/devfile-3p-python/.code-workspace" # <--- Updated path
 commands:
   - id: install
     exec:
       component: dev-runtime
       commandLine: "npm install"
-      workingDir: /projects/project-name
+      workingDir: /projects/devfile-3p-python
