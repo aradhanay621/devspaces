@@ -11,10 +11,7 @@ components:
     container:
       image: quay.io/devfile/universal-developer-image:ubi9-latest
       memoryLimit: 3Gi
-      # --- SCHEMA COMPLIANT FIX ---
-      command: ['tail']
-      args: ['-f', '/dev/null']
-      # -----------------------------
+      # Cleaned up command/args to prevent Init Container crashes
       env:
         - name: VSCODE_DEFAULT_WORKSPACE
           value: "/projects/project-name/.code-workspace"
