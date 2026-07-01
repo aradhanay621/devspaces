@@ -2,7 +2,7 @@ schemaVersion: 2.2.0
 metadata:
   name: reproduce-workspace-issue
 projects:
-  - name: devfile-3p-python # <--- Must match this folder name
+  - name: project-name # <--- Keeps it matching your folder
     git:
       remotes:
         origin: "https://github.com/your-organization/your-repo.git"
@@ -15,10 +15,10 @@ components:
       command: ['tail', '-f', '/dev/null']
       env:
         - name: VSCODE_DEFAULT_WORKSPACE
-          value: "/projects/devfile-3p-python/.code-workspace" # <--- Updated path
+          value: "/projects/project-name/.code-workspace" # <--- Updated to match your pwd
 commands:
   - id: install
     exec:
       component: dev-runtime
       commandLine: "npm install"
-      workingDir: /projects/devfile-3p-python
+      workingDir: /projects/project-name
