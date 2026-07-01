@@ -1,12 +1,12 @@
 schemaVersion: 2.2.2
 metadata:
-  name: dynamic-mutation-test
+  name: isolated-mutation-trigger
 components:
-  - name: universal-developer-image
+  - name: tooling
     container:
-      image: quay.io/devfile/universal-developer-image:ubi8-latest
-      memoryLimit: 3Gi
-      mountSources: true
+      image: alpine:latest
+      memoryLimit: 512Mi
+      command: ['tail', '-f', '/dev/null']
       env:
         - name: VSCODE_DEFAULT_WORKSPACE
-          value: "/projects/.code-workspace" # <-- Changed path
+          value: "/projects/test-trigger-repo/.code-workspace"
