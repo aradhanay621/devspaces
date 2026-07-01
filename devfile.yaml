@@ -1,12 +1,13 @@
 schemaVersion: 2.2.2
 metadata:
-  name: isolated-mutation-trigger
+  name: customer-repro-no-projects
 components:
   - name: tooling
     container:
-      image: alpine:latest
-      memoryLimit: 512Mi
+      # Using a minimal UBI image ensures the platform can boot (unlike Alpine)
+      image: registry.access.redhat.com/ubi8/ubi-minimal:latest
+      memoryLimit: 1.5Gi
       command: ['tail', '-f', '/dev/null']
       env:
         - name: VSCODE_DEFAULT_WORKSPACE
-          value: "/projects/test-trigger-repo/.code-workspace"
+          value: "/projects/.code-workspace"
